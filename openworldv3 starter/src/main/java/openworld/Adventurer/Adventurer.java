@@ -39,6 +39,52 @@ public class Adventurer extends TravellingWorldEntity {
         return attacks;
     }
 
+    public void setLocation(Coordinates newLocation) {
+        this.location = newLocation;
+    }
+    
+
+    public void resolveTurn(int choice) {
+        Coordinates currentLocation = this.getLocation();
+        int x = currentLocation.getX();
+        int y = currentLocation.getY();
+    
+        switch (choice) {
+            case 1: // Move North
+                if (y > 0) {
+                    this.setLocation(new Coordinates(x, y - 1));
+                } else {
+                    System.out.println("Invalid move! You can't move North from here.");
+                }
+                break;
+            case 2: // Move East
+                if (x < world.getxDimension() - 1) {
+                    this.setLocation(new Coordinates(x + 1, y));
+                } else {
+                    System.out.println("Invalid move! You can't move East from here.");
+                }
+                break;
+            case 3: // Move South
+                if (y < world.getyDimension() - 1) {
+                    this.setLocation(new Coordinates(x, y + 1));
+                } else {
+                    System.out.println("Invalid move! You can't move South from here.");
+                }
+                break;
+            case 4: // Move West
+                if (x > 0) {
+                    this.setLocation(new Coordinates(x - 1, y));
+                } else {
+                    System.out.println("Invalid move! You can't move West from here.");
+                }
+                break;
+            default:
+                System.out.println("Invalid choice! Please select a valid option.");
+                break;
+        }
+    }
+    
+
     public String printOptions() {
 
         ArrayList<String> options = new ArrayList<>();
@@ -46,13 +92,13 @@ public class Adventurer extends TravellingWorldEntity {
         if (this.getLocation().getY() < world.getyDimension()) {
             options.add("Move North: Click 1");
         }
-        if (this.getLocation().getX() < world.getxDimension() ) { 
+        if (this.getLocation().getX() < world.getxDimension() - 1) { 
             options.add("Move East: Click 2");
         }
-        if (this.getLocation().getY() > world.getyDimension()) {
+        if (this.getLocation().getY() > 0) {
             options.add("Move South: Click 3");
         }
-        if (this.getLocation().getX() > world.getxDimension()) {
+        if (this.getLocation().getX() > 0) {
             options.add("Move West: Click 4");
         }
 
@@ -64,8 +110,13 @@ public class Adventurer extends TravellingWorldEntity {
         System.out.println(printOptions());
         Scanner userInput = new Scanner(System.in);
         while (!userInput.hasNext());
-        int selection=(Integer.parseInt(userInput.nextLine()));
-        //resolveTurn((Integer.parseInt(userInput.nextLine())));
+        try {
+            int selection = Integer.parseInt(userInput.nextLine());
+            resolveTurn(selection);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Input! Please enter a number from the options provided");
+            
+        }
      
     }
 
