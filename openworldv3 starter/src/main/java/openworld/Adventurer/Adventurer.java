@@ -86,25 +86,25 @@ public class Adventurer extends TravellingWorldEntity {
     
 
     public String printOptions() {
-
         ArrayList<String> options = new ArrayList<>();
-
-        if (this.getLocation().getY() < world.getyDimension()) {
-            options.add("Move North: Click 1");
+    
+        if (this.getLocation().getY() < world.getyDimension() - 1) {
+            options.add("Move North: Click 2");
         }
         if (this.getLocation().getX() < world.getxDimension() - 1) { 
-            options.add("Move East: Click 2");
+            options.add("Move East: Click 3");
         }
         if (this.getLocation().getY() > 0) {
-            options.add("Move South: Click 3");
+            options.add("Move South: Click 4");
         }
         if (this.getLocation().getX() > 0) {
-            options.add("Move West: Click 4");
+            options.add("Move West: Click 1");
         }
-
+    
         String allOptions = String.join("\n", options);
         return allOptions;
     }
+    
 
     public void takeTurn() {
         System.out.println(printOptions());
