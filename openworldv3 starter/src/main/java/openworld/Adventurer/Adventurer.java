@@ -6,11 +6,8 @@ import java.util.Scanner;
 import openworld.Coordinates;
 import openworld.Damage;
 import openworld.World;
-import openworld.characters.Healer;
-import openworld.characters.Wizard;
 import openworld.entityTypes.TravellingWorldEntity;
 import openworld.entityTypes.WorldEntity;
-import openworld.terrain.Mountain;
 
 public class Adventurer extends TravellingWorldEntity {
 
@@ -44,85 +41,57 @@ public class Adventurer extends TravellingWorldEntity {
     }
     
 
-    public void resolveTurn(int choice) {
-        Coordinates currentLocation = this.getLocation();
-        int x = currentLocation.getX();
-        int y = currentLocation.getY();
-    
-        switch (choice) {
-            case 1: // Move North
-                if (y > 0) {
-                    this.setLocation(new Coordinates(x, y - 1));
-                } else {
-                    System.out.println("Invalid move! You can't move North from here.");
-                }
-                break;
-            case 2: // Move East
-                if (x < world.getxDimension() - 1) {
-                    this.setLocation(new Coordinates(x + 1, y));
-                } else {
-                    System.out.println("Invalid move! You can't move East from here.");
-                }
-                break;
-            case 3: // Move South
-                if (y < world.getyDimension() - 1) {
-                    this.setLocation(new Coordinates(x, y + 1));
-                } else {
-                    System.out.println("Invalid move! You can't move South from here.");
-                }
-                break;
-            case 4: // Move West
-                if (x > 0) {
-                    this.setLocation(new Coordinates(x - 1, y));
-                } else {
-                    System.out.println("Invalid move! You can't move West from here.");
-                }
-                break;
-            default:
-                System.out.println("Invalid choice! Please select a valid option.");
-                break;
-        }
-    }
-    
-
     public String printOptions() {
         ArrayList<String> options = new ArrayList<>();
-    
+
         if (this.getLocation().getY() < world.getyDimension() - 1) {
-            options.add("Move North: Click 2");
+            options.add("Move North: Click 1");
         }
-        if (this.getLocation().getX() < world.getxDimension() - 1) { 
-            options.add("Move East: Click 3");
+        if (this.getLocation().getX() < world.getxDimension() - 1) {
+            options.add("Move East: Click 2");
         }
         if (this.getLocation().getY() > 0) {
-            options.add("Move South: Click 4");
+            options.add("Move South: Click 3");
         }
         if (this.getLocation().getX() > 0) {
-            options.add("Move West: Click 1");
+            options.add("Move West: Click 4");
         }
-    
+
+        // TODO: Add options for interacting with NPCs, items, etc. here
+
         String allOptions = String.join("\n", options);
         return allOptions;
     }
-    
 
     public void takeTurn() {
         System.out.println(printOptions());
         Scanner userInput = new Scanner(System.in);
         while (!userInput.hasNext());
-        try {
-            int selection = Integer.parseInt(userInput.nextLine());
-            resolveTurn(selection);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid Input! Please enter a number from the options provided");
-            
-        }
-     
+        int selection = Integer.parseInt(userInput.nextLine());
+        resolveTurn(selection);
     }
 
-   
-  
-    
-    
+    public void resolveTurn(int selection) {
+        switch (selection) {
+            case 1:
+                this.setLocation(new Coordinates(this.getLocation().getX(), this.getLocation().getY() + 1));
+                break;
+            case 2:
+                this.setLocation(new Coordinates(this.getLocation().getX() + 1, this.getLocation().getY()));
+                break;
+            case 3:
+                this.setLocation(new Coordinates(this.getLocation().getX(), this.getLocation().getY() - 1));
+                break;
+            case 4:
+                this.setLocation(new Coordinates(this.getLocation().getX() - 1, this.getLocation().getY()));
+                break;
+            // TODO: Add cases for other actions (e.g., interacting with NPCs, using items, etc.)
+            default:
+                System.out.println("Invalid selection. Please try again.");
+                break;
+        }
+    }
+
+    // TODO: Add any other methods or functionalities you need for the Adventurer class
 
 }
